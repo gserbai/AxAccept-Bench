@@ -1,26 +1,30 @@
-4. Adicione uma imagem:
+.PHONY: setup risc-v axpike-pk axpike-isa-sim
 
-Coloque qualquer imagem (PNG, BMP, JPG) na pasta e renomeie-a para entrada.png (ou altere o nome no código).
+setup:
+    git submodule update --init --recursive
 
-Como Compilar e Executar
+risc-v:
+    cd riscv-gnu-toolchain && \
+    sudo apt-get install -y autoconf automake autotools-dev curl python3 python3-pip python3-tomli libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev libexpat-dev ninja-build git cmake libglib2.0-dev libslirp-dev && \
+    mkdir -p /opt/riscv && \
+    ./configure --prefix=/opt/riscv && \
+    make && \
+    echo 'export PATH=$$PATH:/opt/riscv/bin' >> ~/.bashrc
 
-Abra o seu terminal na pasta do projeto e execute os seguintes comandos:
+axpike-pk:
+    cd axpike-pk && \
+    mkdir build && \
+    cd build && \
+    ../configure --prefix=$RISCV --host=riscv64-unknown-elf && \
+    sudo make && \
+    sudo make install 
 
-    Compilar:
-    Bash
-
-gcc compressor_completo.c -o compressor -lm
-
-(A flag -lm é adicionada por precaução, pois algumas operações de imagem podem precisar da biblioteca matemática).
-
-Executar:
-Bash
-
-    ./compressor
-
-O que vai acontecer:
-O programa irá carregar o arquivo entrada.png, comprimi-lo com qualidade 80 e salvar o resultado como saida.jpg na mesma pasta. Agora você tem um conversor JPEG completo e funcional em um único arquivo!
-
-
-
-#riscv64-unknown-elf-gcc compressor_completo.c -o compressor_riscv -static -lm#
+axpike-isa-sim:
+    cd axpike-isa-sim && \
+    apt-get install device-tree-compiler libboost-regex-dev libboost-system-dev && \
+    mkdir build && \
+    cd build && \
+    ../configure --prefix=$RISCV && \
+    sudo make -j && \
+    sudo make install && \
+    
