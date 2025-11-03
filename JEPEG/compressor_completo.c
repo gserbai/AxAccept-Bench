@@ -1,3 +1,12 @@
+/*
+ * Projeto: AxAccept-Bench
+ * Autor: Guilherme Saides Serbai
+ * Ano: 2025
+ * Email: guilhermeserbai6@gmail.com
+ */
+
+
+
 #include <stdio.h>
 #include <stdlib.h>
 
