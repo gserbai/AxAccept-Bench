@@ -6,31 +6,27 @@ This project provides a set of applications and scripts to test different approx
 
 ---
 
-## 🚀 Core Architecture & Components
+## Core Architecture & Components
 
-This benchmark environment relies on three main components developed by the VArchC research group and the RISC-V community.
+This benchmark environment have how to main components developed by the VArchC research group and the RISC-V community and STB repository.
 
 * **1. Approximate Hardware Simulator:**
     * **Repo:** [VArchC/axpike-isa-sim](https://github.com/VArchC/axpike-isa-sim.git)
-    * **Description:** A modified ISA-level simulator (based on Spike) that understands and executes approximate instructions.
 
 * **2. Proxy Kernel (OS Layer):**
     * **Repo:** [VArchC/axpike-pk](https://github.com/VArchC/axpike-pk.git)
-    * **Description:** The modified Proxy Kernel (PK) that acts as a simple operating system, managing the approximate hardware features and running the applications on top of the simulator.
 
 * **3. Compiler Toolchain:**
     * **Repo:** [riscv-collab/riscv-gnu-toolchain](https://github.com/riscv-collab/riscv-gnu-toolchain.git)
-    * **Description:** The standard RISC-V GNU Toolchain (GCC) used to compile the benchmark applications into RISC-V binaries.
 
 
 * **4. STB:**
-    * **Repo:**(https://github.com/nothings/stb.git)
-    * **Description:** 
+    * **Repo:** [nothings/stb](https://github.com/nothings/stb.git)
 ---
 
-## 🔧 Setup & Installation
+## Setup & Installation
 
-*(Aqui você deve adicionar as instruções de como compilar. A ordem é crucial)*
+IF YOU WNT MAKE MANUALLY THE REQUISITS FOLLOW THE PATHS:
 
 1.  **Build the Toolchain:**
     ```bash
@@ -51,7 +47,11 @@ This benchmark environment relies on three main components developed by the VArc
 
 ---
 
-## 🏃‍♀️ How to Run the Benchmark
+SETUP AND INSTALATION AUTOMATIC: 
+
+
+
+## How to Run the Benchmark
 
 *(Aqui você coloca o comando final para rodar o seu experimento)*
 

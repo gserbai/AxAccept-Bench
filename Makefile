@@ -6,7 +6,7 @@ setup:
 risc-v:
     cd riscv-gnu-toolchain && \
     sudo apt-get install -y autoconf automake autotools-dev curl python3 python3-pip python3-tomli libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev libexpat-dev ninja-build git cmake libglib2.0-dev libslirp-dev && \
-    mkdir -p /opt/riscv && \
+    sudo mkdir /opt/riscv && \
     ./configure --prefix=/opt/riscv && \
     make && \
     echo 'export PATH=$$PATH:/opt/riscv/bin' >> ~/.bashrc

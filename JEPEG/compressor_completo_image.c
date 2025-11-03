@@ -5,8 +5,6 @@
  * Email: guilhermeserbai6@gmail.com
  */
 
-
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -25,11 +23,6 @@ int main(int argc, char *argv[]) {
     const char* input_filename = "entrada.png";
     const char* output_filename = "saida.jpg";
     int quality = 80; // Valor padrão da qualidade, caso nenhum seja fornecido
-    // ---------------------------------
-
-    // --- PROCESSAMENTO DOS ARGUMENTOS DO TERMINAL (argc, argv) ---
-    // argc: é o número de argumentos passados. O nome do programa é sempre o primeiro.
-    // argv: é um array de strings, com cada argumento. argv[0] é o nome do programa.
 
     if (argc > 1) { // Se o usuário forneceu pelo menos um argumento
         // A função atoi() converte uma string (texto) para um inteiro.
