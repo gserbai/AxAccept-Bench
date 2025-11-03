@@ -1,0 +1,9 @@
+AxAccept-Bench
+Copyright (c) 2025 Guilherme Saides Serbai
+==========================================================================
+Este produto inclui software desenvolvido por terceiros:
+
+- stb_image.h e stb_image_write.h (https://github.com/nothings/stb)
+  Este software está em domínio público ou licenciado sob a Licença MIT.
+  O aviso original de copyright e a licença estão incluídos nos respectivos arquivos de cabeçalho.
+==========================================================================
