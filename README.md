@@ -22,6 +22,10 @@ This benchmark environment relies on three main components developed by the VArc
     * **Repo:** [riscv-collab/riscv-gnu-toolchain](https://github.com/riscv-collab/riscv-gnu-toolchain.git)
     * **Description:** The standard RISC-V GNU Toolchain (GCC) used to compile the benchmark applications into RISC-V binaries.
 
+
+* **4. STB:**
+    * **Repo:**(https://github.com/nothings/stb.git)
+    * **Description:** 
 ---
 
 ## 🔧 Setup & Installation
