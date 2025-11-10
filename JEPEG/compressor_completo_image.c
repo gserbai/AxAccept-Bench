@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-
 /*
- * Projeto: AxAccept-Bench
+ * Projeto: AxAccept-Bench (Versão stdin/stdout)
  * Autor: Guilherme Saides Serbai
  * Ano: 2025
  * Email: guilhermeserbai6@gmail.com
@@ -26,66 +25,107 @@
 #include <stdlib.h>
 
 // --- A MÁGICA DO STB ---
-// Estas duas linhas pedem ao compilador para incluir o código-fonte completo
-// das bibliotecas aqui mesmo, tornando nosso programa autocontido.
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
+
+
+// --- FUNÇÕES DE CALLBACK PARA I/O ---
+
+// 1. Callback de escrita: STB chama esta função para escrever o JPEG
+void write_to_stdout_func(void *context, void *data, int size) {
+    (void)context; 
+    fwrite(data, 1, size, stdout);
+}
+
+// 2. Callbacks de leitura: STB chama estas para ler o PNG/JPG do stdin
+int read_from_stdin(void *user, char *data, int size) {
+    (void)user; 
+    return fread(data, 1, size, stdin);
+}
+
+void skip_stdin(void *user, int n) {
+    (void)user;
+    fseek(stdin, n, SEEK_CUR);
+}
+
+int eof_stdin(void *user) {
+    (void)user;
+    return feof(stdin);
+}
 // --------------------
 
 
 int main(int argc, char *argv[]) {
     // --- PARÂMETROS DE CONFIGURAÇÃO ---
-    const char* input_filename = "entrada.png";
-    const char* output_filename = "saida.jpg";
-    int quality = 80; // Valor padrão da qualidade, caso nenhum seja fornecido
-
-    if (argc > 1) { // Se o usuário forneceu pelo menos um argumento
-        // A função atoi() converte uma string (texto) para um inteiro.
-        quality = atoi(argv[1]);
-        
-        // Validação: Garante que a qualidade esteja entre 1 e 100
-        if (quality < 1 || quality > 100) {
-            fprintf(stderr, "Erro: O parâmetro de qualidade deve ser um número entre 1 e 100.\n");
-            fprintf(stderr, "Uso: %s <qualidade>\n", argv[0]);
-            return 1;
-        }
-    } else {
-        printf("Nenhum parâmetro de qualidade fornecido. Usando o valor padrão: %d\n", quality);
-        printf("Dica: Você pode especificar a qualidade executando: %s <numero_de_1_a_100>\n\n", argv[0]);
+    if (argc != 2) {
+        fprintf(stderr, "Erro: Número incorreto de argumentos.\n");
+        fprintf(stderr, "Uso: %s <qualidade_1_a_100>\n", argv[0]);
+        return 1;
+    }
+    int quality = atoi(argv[1]); 
+    if (quality < 1 || quality > 100) {
+        fprintf(stderr, "Erro: O parâmetro de qualidade deve ser um número entre 1 e 100.\n");
+        fprintf(stderr, "Uso: %s <qualidade_1_a_100>\n", argv[0]);
+        return 1;
     }
     // -------------------------------------------------------------
 
     int width, height, original_channels;
 
-    printf("Passo 1: Carregando a imagem '%s'...\n", input_filename);
+    // Define a struct de callbacks para leitura
+    stbi_io_callbacks callbacks;
+    callbacks.read = read_from_stdin;
+    callbacks.skip = skip_stdin;
+    callbacks.eof  = eof_stdin;
 
-    // --- PASSO 1: LER A IMAGEM DE ENTRADA ---
-    unsigned char *pixels = stbi_load(input_filename, &width, &height, &original_channels, 0);
+    fprintf(stderr, "Passo 1: Carregando a imagem do STDIN...\n");
+
+    // --- PASSO 1: LER A IMAGEM DO STDIN ---
+    //
+    // Usa stbi_load_from_callbacks para ler do stdin sem
+    // carregar o arquivo inteiro na memória de uma vez.
+    //
+    unsigned char *pixels = stbi_load_from_callbacks(
+        &callbacks, 
+        NULL, 
+        &width, 
+        &height, 
+        &original_channels, 
+        0
+    );
 
     if (pixels == NULL) {
-        fprintf(stderr, "Erro: Não foi possível carregar a imagem. Verifique se o arquivo '%s' existe na pasta.\n", input_filename);
+        fprintf(stderr, "Erro: Não foi possível carregar a imagem do STDIN.\n");
         return 1;
     }
 
-    printf("Imagem carregada com sucesso! Dimensões: %d x %d, Canais: %d\n", width, height, original_channels);
-    printf("\nPasso 2: Comprimindo para JPEG com qualidade %d...\n", quality);
+    fprintf(stderr, "Imagem carregada! Dimensões: %d x %d, Canais: %d\n", width, height, original_channels);
+    fprintf(stderr, "\nPasso 2: Comprimindo para JPEG com qualidade %d (para STDOUT)...\n", quality);
 
-    // --- PASSO 2: APLICAR O JPEG E SALVAR O ARQUIVO ---
-    int success = stbi_write_jpg(output_filename, width, height, original_channels, pixels, quality);
+    // --- PASSO 2: APLICAR O JPEG E "SALVAR" PARA STDOUT ---
+    int success = stbi_write_jpg_to_func(
+        write_to_stdout_func, 
+        NULL,                       
+        width, 
+        height, 
+        original_channels, 
+        pixels, 
+        quality
+    );
 
     if (!success) {
-        fprintf(stderr, "Erro ao salvar a imagem JPEG.\n");
+        fprintf(stderr, "Erro ao comprimir a imagem JPEG.\n");
         stbi_image_free(pixels);
         return 1;
     }
     
-    printf("Imagem salva com sucesso como '%s'!\n", output_filename);
+    fprintf(stderr, "Compressão para STDOUT concluída com sucesso!\n");
 
     // --- PASSO 3: LIMPEZA ---
     stbi_image_free(pixels);
-    printf("\nProcesso concluído.\n");
+    fprintf(stderr, "\nProcesso concluído.\n");
 
     return 0;
 }
