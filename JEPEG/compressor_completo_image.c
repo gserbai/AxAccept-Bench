@@ -83,10 +83,6 @@ int main(int argc, char *argv[]) {
     fprintf(stderr, "Passo 1: Carregando a imagem do STDIN...\n");
 
     // --- PASSO 1: LER A IMAGEM DO STDIN ---
-    //
-    // Usa stbi_load_from_callbacks para ler do stdin sem
-    // carregar o arquivo inteiro na memória de uma vez.
-    //
     unsigned char *pixels = stbi_load_from_callbacks(
         &callbacks, 
         NULL, 
