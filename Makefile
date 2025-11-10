@@ -28,3 +28,19 @@ axpike-isa-sim:
     sudo make -j && \
     sudo make install && \
     
+
+
+
+transformer da imagem 
+python3 converter.py dataimage Obersee_by_Uday_Nakade_1080p.jpg embeddedimage.h
+
+
+compilacao 
+
+riscv64-unknown-elf-gcc -static -o teste compressor_generico.c -lm
+
+
+
+execução
+
+cat lena3.tif | axpike pk ./teste  90 > saida_comprimida.jpg

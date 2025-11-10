@@ -26,26 +26,16 @@ This benchmark environment have how to main components developed by the VArchC r
 
 ## Setup & Installation
 
-IF YOU WNT MAKE MANUALLY THE REQUISITS FOLLOW THE PATHS:
+IF YOU WANT MAKE MANUALLY THE REQUISITES FOLLOW THE PATHS:
 
 1.  **Build the Toolchain:**
-    ```bash
-    # [TODO: Adicionar o comando para compilar o riscv-gnu-toolchain]
-    # ex: ./configure --prefix=/opt/riscv && make
-    ```
+   
 
 2.  **Build the Proxy Kernel (PK):**
-    ```bash
-    # [TODO: Adicionar o comando para compilar o axpike-pk]
-    # ex: mkdir build && cd build && ../configure --prefix=/opt/riscv ...
-    ```
+   
 
 3.  **Build the Simulator (AxPike):**
-    ```bash
-    # [TODO: Adicionar o comando para compilar o axpike-isa-sim]
-    ```
 
----
 
 SETUP AND INSTALATION AUTOMATIC: 
 
@@ -53,8 +43,4 @@ SETUP AND INSTALATION AUTOMATIC:
 
 ## How to Run the Benchmark
 
-*(Aqui você coloca o comando final para rodar o seu experimento)*
 
-```bash
-# Exemplo de como rodar uma aplicação
-/path/to/axpike-sim /path/to/axpike-pk /path/to/benchmark-application.elf
