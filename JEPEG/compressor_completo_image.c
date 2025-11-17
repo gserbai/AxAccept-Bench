@@ -47,7 +47,16 @@ int read_from_stdin(void *user, char *data, int size) {
 
 void skip_stdin(void *user, int n) {
     (void)user;
-    fseek(stdin, n, SEEK_CUR);
+    unsigned char buffer[1024];
+    int bytes_lidos = 0;
+    while (n > 0) {
+        int bytes_para_ler = (n > sizeof(buffer)) ? sizeof(buffer) : n;
+        bytes_lidos = fread(buffer, 1, bytes_para_ler, stdin);
+        if (bytes_lidos <= 0) {
+            break; 
+        }
+        n -= bytes_lidos;
+    }
 }
 
 int eof_stdin(void *user) {

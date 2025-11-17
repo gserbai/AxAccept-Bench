@@ -37,12 +37,12 @@ python3 converter.py dataimage X.... embeddedimage.h
 
 compilacao 
 
-riscv64-unknown-elf-gcc -static -o teste compressor_generico.c -lm
+riscv64-unknown-elf-gcc -static -o teste compressor_completo_image.c -lm
 
 
 
 execução
 
-cat lena3.tif | axpike pk ./teste  90 > saida_comprimida.jpg
+cat lena3.tif | axpike pk ./teste  90 2> saida_comprimida.jpg
 ou 
 axpike pk ./teste 40 < lena3.tif 1> saida.jpeg
