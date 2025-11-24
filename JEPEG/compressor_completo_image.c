@@ -25,11 +25,17 @@
 #include <stdlib.h>
 
 // --- A MÁGICA DO STB ---
+// 1. STB_IMAGE (Leitura)
+// Define que NÃO VAMOS USAR stdio (remove stbi_load, stbi_load_from_file)
+#define STBI_NO_STDIO 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+
+// 2. STB_IMAGE_WRITE (Escrita)
+// Define que NÃO VAMOS USAR stdio (remove stbi_write_jpg, stbi_write_png)
+#define STBI_WRITE_NO_STDIO 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
-
 
 // --- FUNÇÕES DE CALLBACK PARA I/O ---
 
