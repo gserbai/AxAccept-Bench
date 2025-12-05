@@ -9,7 +9,7 @@ risc-v:
     sudo mkdir /opt/riscv && \
     ./configure --prefix=/opt/riscv && \
     make && \
-    echo 'export PATH=$$PATH:/opt/riscv/bin' >> ~/.bashrc
+    echo "export PATH="$PATH:/opt/riscv/bin" >> ~/.bashrc
 
 axpike-pk:
     cd axpike-pk && \
@@ -37,7 +37,12 @@ python3 converter.py dataimage X.... embeddedimage.h
 
 compilacao 
 
-riscv64-unknown-elf-gcc -static -o teste compressor_completo_image.c -lm
+riscv64-unknown-elf-gcc -static -o teste *.c -lm
+
+cat NB0041.bmp | axpike --quiet pk ./teste 90 > saida.jpg
+
+
+
 
 
 
