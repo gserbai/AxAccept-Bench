@@ -27,6 +27,10 @@
 
 
 int main (int argc, const char* argv[]) {
+    setvbuf(stdout, NULL, _IONBF, 0);
+    setvbuf(stderr, NULL, _IONBF, 0);
+
+
     #if defined(_WIN32)
     _setmode(_fileno(stdin), _O_BINARY);
     _setmode(_fileno(stdout), _O_BINARY);
@@ -87,6 +91,6 @@ int main (int argc, const char* argv[]) {
     fwrite(outputBuffer, 1, bytesEscritos, stdout);
 
     free(outputBuffer);
-    fprintf(stderr, "Concluído.\n");
+    //fprintf(stderr, "Concluído.\n");
     return 0; 
 }
