@@ -20,8 +20,8 @@ This benchmark environment have how to main components developed by the VArchC r
     * **Repo:** [riscv-collab/riscv-gnu-toolchain](https://github.com/riscv-collab/riscv-gnu-toolchain.git)
 
 
-* **4. STB:**
-    * **Repo:** [nothings/stb](https://github.com/nothings/stb.git)
+* **4. AxBench:**
+    A. Yazdanbakhsh, D. Mahajan, P. Lotfi-Kamran, H. Esmaeilzadeh, "AXBENCH: A Multi-Platform Benchmark Suite for Approximate Computing", IEEE Design and Test, special issue on Computing in the Dark Silicon Era 2016.
 ---
 
 ## Setup & Installation

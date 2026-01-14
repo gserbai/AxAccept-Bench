@@ -1,0 +1,3 @@
+There are no AxPIKE custom counters to be written.
+Writing AxPIKE instruction counters to AxPIKE_counters_33722_hart0_0.csv
+Writing AxPIKE energy counters to AxPIKE_energy_33722_hart0_0.csv

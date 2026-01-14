@@ -88,7 +88,9 @@ int main (int argc, const char* argv[]) {
     long bytesEscritos = (long)(outputBufferPtr - outputBuffer);
     fprintf(stderr, "Escrevendo %ld bytes para stdout...\n", bytesEscritos);
 
-    fwrite(outputBuffer, 1, bytesEscritos, stdout);
+    for (long i = 0; i < bytesEscritos; i++) {
+        putchar(outputBuffer[i]);
+    }
 
     free(outputBuffer);
     //fprintf(stderr, "Concluído.\n");

@@ -39,12 +39,10 @@ compilacao
 
 riscv64-unknown-elf-gcc -static -o teste *.c -lm
 
-cat NB0041.bmp | axpike --quiet pk ./teste 90 > saida.jpg
+cat /home/guilherme/AxAccept-Bench/JPEG/imagesTest/lena_gray.bmp | axpike pk ./teste  90 > saida_comprimida.jpg
 
-
-
-
-
+# lê CSV, executa o encoder e salva o JPEG em saida.jpg; logs vão para logs.txt
+cat /home/guilherme/AxAccept-Bench/JPEG/imagesTest/output.csv | axpike pk ./teste 90 1> saida.jpg 2> logs.txt
 
 execução
 
