@@ -31,23 +31,3 @@ axpike-isa-sim:
 
 
 
-transformer da imagem 
-python3 converter.py dataimage X.... embeddedimage.h
-
-
-compilacao 
-
-cd /home/guilherme/AxAccept-Bench/JPEG/src
-riscv64-unknown-elf-gcc -static -o ../jpeg_encoder *.c -lm  
-
-
-cat /home/guilherme/AxAccept-Bench/JPEG/imagesTest/lena_gray.bmp | axpike pk ./teste  90 > saida_comprimida.jpg
-
-# lê CSV, executa o encoder e salva o JPEG em saida.jpg; logs vão para logs.txt
-cat /home/guilherme/AxAccept-Bench/JPEG/imagesTest/output.csv | axpike pk ./teste 90 1> saida.jpg 2> logs.txt
-
-execução
-
-cat lena3.tif | axpike pk ./teste  90 2> saida_comprimida.jpg
-ou 
-axpike pk ./teste 40 < lena3.tif 1> saida.jpeg
