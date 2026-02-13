@@ -1,0 +1,9 @@
+Uso: ./jpeg_stripper/jpeg_wrapper.sh <entrada.csv> <saida.jpg> [qualidade] [modo]
+  entrada.csv: Arquivo CSV de entrada
+  saida.jpg: Arquivo JPEG de saída (será limpo automaticamente)
+  qualidade: Fator de qualidade 1-100 (padrão: 90)
+  modo: 'gray' ou 'rgb' (padrão: gray)
+
+Exemplos:
+  ./jpeg_stripper/jpeg_wrapper.sh input.csv output.jpg 90 gray
+  ./jpeg_stripper/jpeg_wrapper.sh input.csv output.jpg 85 rgb

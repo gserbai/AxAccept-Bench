@@ -34,5 +34,9 @@ void freeRgbImage(RgbImage* image);
 void makeGrayscale(RgbImage* rgbImage);
 
 void readMcuFromRgbImage(RgbImage* srcImage, int x, int y, INT16* data);
+void rgbToYcbcr(int r, int g, int b, INT16* y, INT16* cb, INT16* cr);
+void readYBlockFromRgbImage(RgbImage* image, int x, int y, INT16* data);
+void readCbBlockFromRgbImage(RgbImage* image, int x, int y, INT16* data);
+void readCrBlockFromRgbImage(RgbImage* image, int x, int y, INT16* data);
 
 #endif /* RGB_IMAGE_H_ */

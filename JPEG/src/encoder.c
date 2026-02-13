@@ -8,7 +8,7 @@
 #include "datatype.h"
 #include "jpegconfig.h"
 #include "prototype.h"
-
+    #include<stdbool.h>
 #include "rgbimage.h"
 #include <time.h>
 
@@ -58,12 +58,40 @@ UINT8* encodeImage(
 	UINT16 i, j;
 	/* Writing Marker Data */
 	outputBuffer = writeMarkers(outputBuffer, imageFormat, srcImage->w, srcImage->h);
-	for (i = 0; i < srcImage->h; i += 8) {
-		for (j = 0; j < srcImage->w; j += 8) {
-			readMcuFromRgbImage(srcImage, j, i, Y1);
-			/* Encode the data in MCU */
-			//outputBuffer = encodeMcu(imageFormat, outputBuffer);
-			outputBuffer = encodeMcu(imageFormat, outputBuffer);
+	
+	if (imageFormat == GRAY) {
+		// Modo escala de cinza: processa apenas luminância
+		for (i = 0; i < srcImage->h; i += 8) {
+			for (j = 0; j < srcImage->w; j += 8) {
+				readMcuFromRgbImage(srcImage, j, i, Y1);
+				outputBuffer = encodeMcu(1, outputBuffer, ILqt);
+			}
+		}
+	} else {
+		// Modo RGB: processa Y, Cb e Cr com downsampling 4:2:0
+		for (i = 0; i < srcImage->h; i += 16) {
+			for (j = 0; j < srcImage->w; j += 16) {
+				// Processa 4 blocos Y (2x2)
+				readYBlockFromRgbImage(srcImage, j, i, Y1);
+				outputBuffer = encodeMcu(1, outputBuffer, ILqt);
+				
+				readYBlockFromRgbImage(srcImage, j + 8, i, Y2);
+				outputBuffer = encodeMcu(1, outputBuffer, ILqt);
+				
+				readYBlockFromRgbImage(srcImage, j, i + 8, Y3);
+				outputBuffer = encodeMcu(1, outputBuffer, ILqt);
+				
+				readYBlockFromRgbImage(srcImage, j + 8, i + 8, Y4);
+				outputBuffer = encodeMcu(1, outputBuffer, ILqt);
+				
+				// Processa 1 bloco Cb (downsampled)
+				readCbBlockFromRgbImage(srcImage, j, i, CB);
+				outputBuffer = encodeMcu(2, outputBuffer, ICqt);
+				
+				// Processa 1 bloco Cr (downsampled)
+				readCrBlockFromRgbImage(srcImage, j, i, CR);
+				outputBuffer = encodeMcu(3, outputBuffer, ICqt);
+			}
 		}
 	}
 
@@ -74,9 +102,27 @@ UINT8* encodeImage(
 }
 
 UINT8* encodeMcu(
-	UINT32 imageFormat,
-	UINT8 *outputBuffer
+	UINT32 componentId,
+	UINT8 *outputBuffer,
+	UINT16 *quantTable
 ) {
+	INT16 *sourceBuffer;
+	
+	// Seleciona o buffer de dados correto baseado no componente
+	switch(componentId) {
+		case 1: sourceBuffer = Y1; break;
+		case 2: sourceBuffer = Y2; break;
+		case 3: sourceBuffer = Y3; break;
+		case 4: sourceBuffer = Y4; break;
+		case 5: sourceBuffer = CB; break;
+		case 6: sourceBuffer = CR; break;
+		default: sourceBuffer = Y1; break;
+	}
+	
+	// Copia o buffer para Y1 para processar
+	for (int k = 0; k < BLOCK_SIZE; k++) {
+		Y1[k] = sourceBuffer[k];
+	}
 	
 	levelShift(Y1);
 
@@ -93,7 +139,7 @@ UINT8* encodeMcu(
 	// #pragma parrot(input, "jpeg", [64]dataIn) // Removido
 	
 	dct(Y1);
-	quantization(Y1, ILqt);
+	quantization(Y1, quantTable);
 
 	for (int i = 0; i < BLOCK_SIZE; ++i)
 	{
@@ -117,7 +163,7 @@ UINT8* encodeMcu(
 		}
 	}
 
-	outputBuffer = huffman(1, outputBuffer);
+	outputBuffer = huffman(componentId, outputBuffer);
 
 	return outputBuffer;
 }

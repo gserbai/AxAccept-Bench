@@ -22,7 +22,7 @@ UINT8* closeBitstream(UINT8 *);
 //UINT8* encodeImage(RgbImage*, UINT8 *, UINT32, UINT32);
 UINT8* encodeImage(RgbImage*, UINT8 *, UINT32, UINT32);
 //UINT8* encodeMcu(UINT32, UINT8*);
-UINT8* encodeMcu(UINT32, UINT8*);
+UINT8* encodeMcu(UINT32, UINT8*, UINT16*);
 
 void levelShift(INT16 *);
 void dct(INT16 *);

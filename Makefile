@@ -37,7 +37,9 @@ python3 converter.py dataimage X.... embeddedimage.h
 
 compilacao 
 
-riscv64-unknown-elf-gcc -static -o teste *.c -lm
+cd /home/guilherme/AxAccept-Bench/JPEG/src
+riscv64-unknown-elf-gcc -static -o ../jpeg_encoder *.c -lm  
+
 
 cat /home/guilherme/AxAccept-Bench/JPEG/imagesTest/lena_gray.bmp | axpike pk ./teste  90 > saida_comprimida.jpg
 

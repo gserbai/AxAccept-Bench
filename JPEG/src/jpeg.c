@@ -20,6 +20,8 @@
 #if defined(_WIN32)
 #include <io.h>
 #include <fcntl.h>
+#else
+#include <unistd.h>
 #endif
 
 #define OUT_BUFFER_SIZE 5000000
@@ -27,18 +29,18 @@
 
 
 int main (int argc, const char* argv[]) {
-    setvbuf(stdout, NULL, _IONBF, 0);
     setvbuf(stderr, NULL, _IONBF, 0);
-
 
     #if defined(_WIN32)
     _setmode(_fileno(stdin), _O_BINARY);
     _setmode(_fileno(stdout), _O_BINARY);
     #endif
     
-    if (argc != 2) {
-        fprintf(stderr, "Erro: Argumento de qualidade faltando.\n");
-        fprintf(stderr, "Uso: %s <qualidade_1_a_100>\n", argv[0]);
+    if (argc < 2) {
+        fprintf(stderr, "Erro: Argumentos faltando.\n");
+        fprintf(stderr, "Uso: %s <qualidade_1_a_100> [rgb|gray]\n", argv[0]);
+        fprintf(stderr, "  qualidade_1_a_100: Fator de qualidade JPEG (1-100)\n");
+        fprintf(stderr, "  rgb|gray: Modo de codificação (padrão: gray)\n");
         return 1;
     }
 
@@ -49,20 +51,26 @@ int main (int argc, const char* argv[]) {
         return 1;
     }
     
-    // 3. Converte a escala 1-100 para a escala do AxBench (1-1024)
-    // (ex: 90 se torna 921)
+    // Determina o modo de imagem (RGB ou GRAY)
+    UINT32 imageFormat = GRAY;
+    if (argc >= 3) {
+        if (strcmp(argv[2], "rgb") == 0) {
+            imageFormat = RGB;
+            fprintf(stderr, "Modo: RGB (4:2:0)\n");
+        } else if (strcmp(argv[2], "gray") == 0) {
+            imageFormat = GRAY;
+            fprintf(stderr, "Modo: Escala de Cinza\n");
+        }
+    }
+    
+    // 3. Calcula o fator de qualidade: Q=1 -> tabelas pequenas (pior qualidade, arquivo maior)
+    // Q=100 -> tabelas grandes (melhor qualidade, arquivo menor)
     UINT32 qualityFactor = (UINT32)((quality_1_to_100 * 1024) / 100);
     
     fprintf(stderr, "Usando qualidade %d/100 (Fator AxBench: %u)\n", quality_1_to_100, (unsigned int)qualityFactor);
 
-
-
-    UINT32 imageFormat;
     UINT8 *outputBuffer;
     UINT8 *outputBufferPtr;
-
-    imageFormat = GRAY;
-
 
     RgbImage srcImage;
     initRgbImage(&srcImage);
@@ -72,7 +80,11 @@ int main (int argc, const char* argv[]) {
         return -1;
     }
 
-    makeGrayscale(&srcImage);
+    // Se for modo grayscale, converte para grayscale
+    if (imageFormat == GRAY) {
+        makeGrayscale(&srcImage);
+    }
+    // Se for RGB, mantém os valores RGB originais
 
     outputBuffer = (UINT8 *) malloc(OUT_BUFFER_SIZE * sizeof(UINT8));
 
@@ -87,10 +99,16 @@ int main (int argc, const char* argv[]) {
 
     long bytesEscritos = (long)(outputBufferPtr - outputBuffer);
     fprintf(stderr, "Escrevendo %ld bytes para stdout...\n", bytesEscritos);
+    fflush(stderr);  // Garante que todo stderr seja escrito antes do JPEG
 
+    // Escreve bytes JPEG diretamente no stdout usando syscall write (evita buffering)
+    #if defined(_WIN32)
     for (long i = 0; i < bytesEscritos; i++) {
-        putchar(outputBuffer[i]);
+        fputc(outputBuffer[i], stdout);
     }
+    #else
+    write(STDOUT_FILENO, outputBuffer, bytesEscritos);
+    #endif
 
     free(outputBuffer);
     //fprintf(stderr, "Concluído.\n");

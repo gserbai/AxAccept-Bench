@@ -123,9 +123,11 @@ int loadRgbImageFromStream(FILE* stream, RgbImage* image) {
     } 
     
     strcpy(image->meta, w);
-
-    image->w = (image->w / 8) * 8;
-    image->h = (image->h / 8) * 8;
+    //image->w = (image->w / 8) * 8;
+    //image->h = (image->h / 8) * 8;
+    /* Ajusta dimensões para múltiplos de 16 para suportar MCU 16x16 no modo RGB */
+    image->w = (image->w / 16) * 16;
+    image->h = (image->h / 16) * 16;
 
     
     return 1;
@@ -221,5 +223,101 @@ void readMcuFromRgbImage(RgbImage* image, int x, int y, INT16* data) {
 			data[i * 8 + j] = (image->pixels[image->h - 1][image->w - 1].r);
 	}
 #endif
+}
+
+/**
+ * Converte RGB para YCbCr e extrai componentes Y, Cb, Cr
+ * usando coeficientes ITU-R BT.601
+ */
+void rgbToYcbcr(int r, int g, int b, INT16* y, INT16* cb, INT16* cr) {
+    float fy, fcb, fcr;
+    
+    // Coeficientes ITU-R BT.601
+    fy = 0.299f * r + 0.587f * g + 0.114f * b;
+    fcb = -0.169f * r - 0.331f * g + 0.500f * b;
+    fcr = 0.500f * r - 0.419f * g - 0.081f * b;
+    
+    *y = (INT16)fy;
+    *cb = (INT16)(fcb + 128);  // Shift para range [0, 255]
+    *cr = (INT16)(fcr + 128);
+}
+
+/**
+ * Lê bloco Y (luminância) a partir da imagem RGB
+ */
+void readYBlockFromRgbImage(RgbImage* image, int x, int y, INT16* data) {
+    int i, j;
+    INT16 ycb, cr;
+
+    for (i = 0; i < 8; ++i) {
+        for(j = 0; j < 8; ++j) {
+            rgbToYcbcr(
+                image->pixels[y + i][x + j].r,
+                image->pixels[y + i][x + j].g,
+                image->pixels[y + i][x + j].b,
+                &data[i * 8 + j],
+                &ycb,
+                &cr
+            );
+        }
+    }
+}
+
+/**
+ * Lê bloco Cb (crominância azul) a partir da imagem RGB
+ * com downsampling 2x2
+ */
+void readCbBlockFromRgbImage(RgbImage* image, int x, int y, INT16* data) {
+    int i, j, pi, pj;
+    INT16 yval, cr;
+    int sum;
+
+    // Downsampling 2x2 (16 pixels -> 1)
+    for (i = 0; i < 8; ++i) {
+        for(j = 0; j < 8; ++j) {
+            sum = 0;
+            for(pi = 0; pi < 2 && (y + i*2 + pi) < image->h; pi++) {
+                for(pj = 0; pj < 2 && (x + j*2 + pj) < image->w; pj++) {
+                    int r = image->pixels[y + i*2 + pi][x + j*2 + pj].r;
+                    int g = image->pixels[y + i*2 + pi][x + j*2 + pj].g;
+                    int b = image->pixels[y + i*2 + pi][x + j*2 + pj].b;
+                    INT16 cb;
+                    
+                    rgbToYcbcr(r, g, b, &yval, &cb, &cr);
+                    sum += cb;
+                }
+            }
+            data[i * 8 + j] = (INT16)(sum / 4);
+        }
+    }
+}
+
+/**
+ * Lê bloco Cr (crominância vermelha) a partir da imagem RGB
+ * com downsampling 2x2
+ */
+void readCrBlockFromRgbImage(RgbImage* image, int x, int y, INT16* data) {
+    int i, j, pi, pj;
+    INT16 yval, cb;
+    int sum;
+
+    // Downsampling 2x2 (16 pixels -> 1)
+    for (i = 0; i < 8; ++i) {
+        for(j = 0; j < 8; ++j) {
+            sum = 0;
+            for(pi = 0; pi < 2 && (y + i*2 + pi) < image->h; pi++) {
+                for(pj = 0; pj < 2 && (x + j*2 + pj) < image->w; pj++) {
+                    int r = image->pixels[y + i*2 + pi][x + j*2 + pj].r;
+                    int g = image->pixels[y + i*2 + pi][x + j*2 + pj].g;
+                    int b = image->pixels[y + i*2 + pi][x + j*2 + pj].b;
+                    INT16 cr;
+                    
+                    rgbToYcbcr(r, g, b, &yval, &cb, &cr);
+                    sum += cr;
+                }
+            }
+            data[i * 8 + j] = (INT16)(sum / 4);
+        }
+    }
 }
 
