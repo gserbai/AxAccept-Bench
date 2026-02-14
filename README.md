@@ -114,6 +114,6 @@ sudo make install
 
 Detailed instructions on how to execute the benchmarks and analyze results can be found in the documentation:
 
-👉 **[See Usage.md](https://www.google.com/search?q=Usage.md)**
+👉 **[See Usage.md](/home/guilherme/AxAccept-Bench/JPEG/USAGE.md)**
 
 
