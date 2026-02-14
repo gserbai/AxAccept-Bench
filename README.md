@@ -1,4 +1,3 @@
-```markdown
 # AxAccept-Bench: Benchmark for Acceptability of Approximation
 
 **AxAccept-Bench** is a benchmark suite designed to evaluate the **acceptability levels** of approximate computing techniques.
