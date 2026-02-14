@@ -116,5 +116,4 @@ Detailed instructions on how to execute the benchmarks and analyze results can b
 
 👉 **[See Usage.md](https://www.google.com/search?q=Usage.md)**
 
-```
 
