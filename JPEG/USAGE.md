@@ -1,10 +1,10 @@
-# 📘 Guia Mestre: JPEG Encoder (RISC-V/AxAccept-Bench)
+# 📘 Master Guide: JPEG Encoder (RISC-V/AxAccept-Bench)
 
-Este guia unifica os comandos de compilação, execução, limpeza de logs e testes de RGB.
+This guide unifies the commands for compilation, execution, log cleaning, and RGB tests.
 
-## 1. 🛠️ Compilação (Necessário antes de tudo)
+## 1. 🛠️ Compilation (Required first)
 
-Antes de rodar, você precisa compilar o código fonte C para RISC-V.
+Before running, you need to compile the C source code for RISC-V.
 
 ```bash
 cd src
@@ -13,105 +13,92 @@ cd ..
 
 ```
 
-*Isso gera o binário `jpeg_encoder` na raiz da pasta JPEG.*
+*This generates the `jpeg_encoder` binary in the JPEG root folder.*
 
 ---
 
-## 2. ⭐ Execução Automática (Recomendado)
+## 2. ⭐ Automatic Execution (Recommended)
 
-Usa o script `jpeg_wrapper.sh`. Ele faz tudo: executa o encoder, remove o lixo (logs do BBL) e gera o JPEG final limpo.
+Uses the `jpeg_wrapper.sh` script. It does everything: runs the encoder, removes junk (BBL logs), and generates the clean final JPEG.
 
-**Sintaxe:**
+**Syntax:**
 
 ```bash
-./jpeg_wrapper.sh <entrada.csv> <saida.jpg> [qualidade] [modo]
+./jpeg_wrapper.sh <input.csv> <output.jpg> [quality] [mode]
 
 ```
 
-**Exemplos de uso:**
+**Usage Examples:**
 
 ```bash
-# Modo Grayscale (Padrão: qualidade 90)
-./jpeg_wrapper.sh image.csv saida_gray.jpg 90 gray
+# Grayscale Mode (Default: quality 90)
+./jpeg_wrapper.sh image.csv output_gray.jpg 90 gray
 
-# Modo RGB (Qualidade 85)
-./jpeg_wrapper.sh image.csv saida_rgb.jpg 85 rgb
-
-```
-
----
-
-## 3. ⚙️ Execução Manual (Passo a Passo)
-
-Útil se você precisa debugar ou não quer usar o wrapper. O processo é dividido em **Gerar** e **Limpar**.
-
-### Passo A: Gerar o JPEG (Sujo)
-
-O `axpike` mistura logs (texto) com a imagem (binário).
-
-```bash
-# Sintaxe: cat CSV | axpike pk ./binario QUALIDADE MODO > SAIDA
-cat image.csv | axpike pk ./jpeg_encoder 90 rgb > saida_suja.jpg
-
-```
-
-*Nota: Você pode usar `2>/dev/null` para ignorar erros, mas o arquivo de saída ainda pode conter o cabeçalho do BBL.*
-
-### Passo B: Limpar o JPEG
-
-Remove o texto "bbl loader" e outros lixos antes do marcador `FFD8` do JPEG.
-
-```bash
-./clean_jpeg.sh saida_suja.jpg saida_final.jpg
+# RGB Mode (Quality 85)
+./jpeg_wrapper.sh image.csv output_rgb.jpg 85 rgb
 
 ```
 
 ---
 
-## 4. 🧪 Ferramentas Úteis & Testes
+## 3. ⚙️ Manual Execution (Step by Step)
 
-### Converter BMP para CSV
+Useful if you need to debug or don't want to use the wrapper. The process is divided into **Generate** and **Clean**.
 
-O encoder não lê BMP direto, precisa converter para CSV (texto) primeiro.
+### Step A: Generate the JPEG (Dirty)
+
+`axpike` mixes logs (text) with the image (binary).
 
 ```bash
-python3 bmp_to_csv_nopil.py imagem.bmp > image.csv
+# Syntax: cat CSV | axpike pk ./binary QUALITY MODE > OUTPUT
+cat image.csv | axpike pk ./jpeg_encoder 90 rgb > dirty_output.jpg
 
 ```
 
-### Testar Comparação (Gray vs RGB)
+*Note: You can use `2>/dev/null` to ignore errors, but the output file may still contain the BBL header.*
 
-Roda os dois modos e compara os tamanhos dos arquivos gerados.
+### Step B: Clean the JPEG
+
+Removes the "bbl loader" text and other junk before the JPEG `FFD8` marker.
 
 ```bash
-./test_rgb.sh
+./clean_jpeg.sh dirty_output.jpg final_output.jpg
 
 ```
-
-*Expectativa: O arquivo RGB deve ser ~10-15% maior que o Grayscale devido aos componentes de cor (Cb/Cr com downsampling 4:2:0).*
 
 ---
 
-## 5. 📝 Resumo Técnico dos Parâmetros
+## 4. 🧪 Useful Tools & Tests
 
-| Parâmetro | Valores | Descrição |
+### Convert BMP to CSV
+
+The encoder doesn't read BMP directly; it needs to convert to CSV (text) first.
+
+```bash
+python3 bmp_to_csv_nopil.py image.bmp > image.csv
+
+```
+
+## 5. 📝 Technical Parameter Summary
+
+| Parameter | Values | Description |
 | --- | --- | --- |
-| **Qualidade** | `1` a `100` | Define a quantização. `1` = Pior qualidade/Menor tamanho. `100` = Melhor qualidade. |
-| **Modo** | `gray` | Converte para escala de cinza (apenas componente Y). |
-| **Modo** | `rgb` | Mantém cores. Usa YCbCr com downsampling 4:2:0 (1 Y + ¼ Cb + ¼ Cr). |
+| **Quality** | `1` to `100` | Defines quantization. `1` = Worst quality/Smallest size. `100` = Best quality. |
+| **Mode** | `gray` | Converts to grayscale (Y component only). |
+| **Mode** | `rgb` | Keeps colors. Uses YCbCr with 4:2:0 downsampling (1 Y + ¼ Cb + ¼ Cr). |
 
-### Estrutura de Diretórios Esperada
+### Expected Directory Structure
 
-* `src/`: Códigos `.c` (encoder, huffman, rgbimage).
-* `jpeg_wrapper.sh`: Script principal.
-* `clean_jpeg.sh`: Script de limpeza (remove logs BBL).
-* `jpeg_encoder`: Binário compilado (RISC-V).
+* `src/`: `.c` codes (encoder, huffman, rgbimage).
+* `jpeg_wrapper.sh`: Main script.
+* `clean_jpeg.sh`: Cleaning script (removes BBL logs).
+* `jpeg_encoder`: Compiled binary (RISC-V).
 
 ---
 
-### 💡 Dica Rápida
+### 💡 Quick Tip
 
-Se der erro de permissão em qualquer script:
+If you get a permission error on any script:
 
 ```bash
 chmod +x *.sh
