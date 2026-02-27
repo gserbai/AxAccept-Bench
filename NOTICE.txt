@@ -10,11 +10,12 @@ THIRD-PARTY SOFTWARE NOTICES
 
 This product includes software or benchmarks adapted from:
 
-1. AxBench (JPEG-SRC)
-   Reference: A. Yazdanbakhsh, D. Mahajan, P. Lotfi-Kamran, H. Esmaeilzadeh,
-   "AXBENCH: A Multi-Platform Benchmark Suite for Approximate Computing",
-   IEEE Design and Test, special issue on Computing in the Dark Silicon Era 2016.
-   
-   Original Source: http://axbench.org/ 
+1. TooJpeg
+   Copyright (c) 2015-2023 Stephan Brumme
+   Source: https://github.com/stbrumme/toojpeg
+   License: Zlib License (https://opensource.org/licenses/Zlib)
+
+   Description: A very small C++ class to write JPEG files. 
+   Used for image compression benchmarking in the AxAccept-Bench project.
 
 ==========================================================================

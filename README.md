@@ -22,8 +22,11 @@ This benchmark environment is built upon key components developed by the **VArch
 * **Repository:** [riscv-collab/riscv-gnu-toolchain](https://github.com/riscv-collab/riscv-gnu-toolchain.git)
 * **Description:** The standard GCC toolchain for cross-compiling RISC-V applications.
 
-### 4. AxBench (Reference)
-* **Citation:** A. Yazdanbakhsh, D. Mahajan, P. Lotfi-Kamran, H. Esmaeilzadeh, *"AXBENCH: A Multi-Platform Benchmark Suite for Approximate Computing"*, IEEE Design and Test, special issue on Computing in the Dark Silicon Era, 2016.
+### 5. TooJpeg (Image Compression Engine)
+* **Author:** Stephan Brumme.
+* **Project:** "TooJpeg: A very small C++ class to write JPEG files".
+* **URL:** https://github.com/stbrumme/toojpeg
+* **License:** Zlib License.
 
 ---
 

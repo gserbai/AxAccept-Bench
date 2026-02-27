@@ -44,3 +44,8 @@ EOF
 
 # Verifica se o arquivo é JPEG válido
 file "$OUTPUT"
+
+
+
+#saida lena.jpeg 
+ #axpike --adele=mem_read_prob:0,linesz:32 --adele-activate=0:AXRAM --dc=128:8:32 --ic=256:4:32 --l2=1024:4:32 pk ./toojpeg_encoder_rv 1 < lena.csv 
