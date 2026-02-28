@@ -35,7 +35,7 @@ If you do not modify the kernel, you must use the `clean_jpeg` tool to strip the
 Use the RISC-V cross-compiler to generate a static binary with high-level optimization:
 
 ```bash
-riscv64-unknown-elf-g++ -O3 -static -o toojpeg_encoder_rv main.cpp toojpeg.cpp
+riscv64-unknown-elf-g++ -O3 -static -o ../toojpeg_encoder_rv main.cpp toojpeg.cpp
 
 ```
 
@@ -46,7 +46,10 @@ riscv64-unknown-elf-g++ -O3 -static -o toojpeg_encoder_rv main.cpp toojpeg.cpp
 
 ## 3. Executing the Application
 
-Run the simulation using **AxPike** with the following parameters for cache and approximate memory (AXRAM):
+Run the simulation using **AxPike** with the following parameters for cache and approximate memory (AXRAM) attention you can alter the parameters:
+
+to you use the parameter de errors you need set for on the variavel initial in /axpike-isa-sim/adele/adf/AxRAM.adf
+
 
 ```bash
 axpike --adele=mem_read_prob:0,linesz:32 --adele-activate=0:AXRAM \
