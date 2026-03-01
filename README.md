@@ -32,7 +32,20 @@ This benchmark environment is built upon key components developed by the **VArch
 
 ## 🚀 Setup & Installation
 
+This project assumes you already have the riscv-gnu-toolchain configured. If not, please refer to riscv-collab/riscv-gnu-toolchain for more information. You can clone the repository and follow the steps below:
+RISC-V Toolchain Build:
+Bash
+
+```bash
+    cd riscv-gnu-toolchain && \
+    sudo apt-get install -y autoconf automake autotools-dev curl python3 python3-pip python3-tomli libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev libexpat-dev ninja-build git cmake libglib2.0-dev libslirp-dev && \
+    sudo mkdir -p /opt/riscv && \
+    ./configure --prefix=/opt/riscv && \
+    make && \
+    echo 'export PATH="/opt/riscv/bin:$PATH"' >> ~/.bashrc
+```
 You can install the environment **automatically** using the provided Makefile or set it up **manually** by following the steps below.
+
 
 ### Option A: Automatic Installation (Recommended)
 If you have the `Makefile` configured, simply run:

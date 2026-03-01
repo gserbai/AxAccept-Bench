@@ -4,6 +4,6 @@
 [submodule "axpike-isa-sim"]
 	path = axpike-isa-sim
 	url = https://github.com/VArchC/axpike-isa-sim.git
-[submodule "riscv-gnu-toolchain"]
-	path = riscv-gnu-toolchain
-	url = https://github.com/riscv-collab/riscv-gnu-toolchain.git
+#[submodule "riscv-gnu-toolchain"]
+	#path = riscv-gnu-toolchain
+	#url = https://github.com/riscv-collab/riscv-gnu-toolchain.git
