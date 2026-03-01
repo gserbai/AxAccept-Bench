@@ -34,7 +34,6 @@ This benchmark environment is built upon key components developed by the **VArch
 
 This project assumes you already have the riscv-gnu-toolchain configured. If not, please refer to riscv-collab/riscv-gnu-toolchain for more information. You can clone the repository and follow the steps below:
 RISC-V Toolchain Build:
-Bash
 
 ```bash
     cd riscv-gnu-toolchain && \
