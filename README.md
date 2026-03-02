@@ -45,34 +45,15 @@ example from comands to shell to you need run
     source ~/.bashrc
 ```
 
-You can install the environment **automatically** using the provided Makefile or set it up **manually** by following the steps below.
+You can install the environment by following the steps below.
 
-
-### Option A: Automatic Installation (Recommended)
-simply run:
-
-```bash
-make setup
-
-make axpike-pk
-
-make axpike-isa-sim
-
-```
-
----
-
-### Option B: Manual Installation
-
-If you prefer to build each component manually, follow these steps in order.
-
+!!!remember use --recursive!!! 
 
 #### 1. AxPike Proxy Kernel (pk)
 
 Builds the lightweight OS layer.
 
 ```bash
-git clone https://github.com/VArchC/axpike-pk.git 
 cd axpike-pk
 mkdir build && cd build
 ../configure --prefix=$RISCV --host=riscv64-unknown-elf
@@ -86,12 +67,11 @@ sudo make install
 Builds the hardware simulator.
 
 ```bash
-git clone https://github.com/VArchC/axpike-isa-sim.git
 cd axpike-isa-sim
 mkdir build && 
 cd build
 ../configure --prefix=$RISCV
-sudo make -j$(nproc)
+sudo make -j
 sudo make install
 
 ```
