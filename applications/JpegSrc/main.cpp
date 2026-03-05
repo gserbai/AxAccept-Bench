@@ -1,95 +1,129 @@
 // //////////////////////////////////////////////////////////
-// main.c from toojpeg.cpp
-// written by Guilherme Saides Serbai, 2025-2026
-// see https://create.stephan-brumme.com/toojpeg/
-//
-
+// main.cpp - versão robusta para bare metal
+// Guilherme Saides Serbai 2025-2026
+// //////////////////////////////////////////////////////////
 
 #include <iostream>
 #include <vector>
 #include <cstdio>
-#include <cstdlib> 
+#include <cstdlib>
 #include "toojpeg.h"
 
 void myOutput(unsigned char byte) {
     putchar(byte);
 }
 
-// O nosso trator de extrair números da stream
-int readNextInt() {
-    int c;
+// ===============================
+// Parser baseado em buffer
+// ===============================
+int readNextIntFromBuffer(const std::vector<char>& buffer, size_t& cursor) {
     int value = 0;
     bool started = false;
-    
-    while ((c = getchar()) != EOF) {
+
+    while (cursor < buffer.size()) {
+        char c = buffer[cursor++];
+
         if (c >= '0' && c <= '9') {
             value = value * 10 + (c - '0');
             started = true;
         } else if (started) {
-            break; 
+            break;
         }
     }
-    if (!started) return -1;
+
+    if (!started)
+        return -1;
+
     return value;
 }
 
-// Agora a main recebe os argumentos do terminal
 int main(int argc, char* argv[]) {
-    
-    // 1. Lógica da Qualidade (Lê do terminal ou usa 90 por padrão)
-    unsigned char quality = 90; 
+
+    // ===============================
+    // 1. Qualidade
+    // ===============================
+    unsigned char quality = 90;
     if (argc >= 2) {
         int q = std::atoi(argv[1]);
-        if (q < 1) q = 1;      // Trava de segurança: minimo 1
-        if (q > 100) q = 100;  // Trava de segurança: maximo 100
+        if (q < 1)   q = 1;
+        if (q > 100) q = 100;
         quality = (unsigned char)q;
     }
 
-    // 2. Lê a resolução no topo do arquivo
-    int width = readNextInt();
-    int height = readNextInt();
-    
+    // ===============================
+    // 2. Ler TODA a entrada primeiro
+    // ===============================
+    std::vector<char> inputBuffer;
+    char temp[4096];
+
+    while (true) {
+        size_t n = fread(temp, 1, sizeof(temp), stdin);
+        if (n == 0)
+            break;
+
+        inputBuffer.insert(inputBuffer.end(), temp, temp + n);
+    }
+
+    if (inputBuffer.empty()) {
+        fprintf(stderr, "Erro: Nenhuma entrada recebida.\n");
+        return 1;
+    }
+
+    for (auto a : inputBuffer) {
+        std::cout << a << std::endl;
+    }
+
+    // ===============================
+    // 3. Parsing começa aqui
+    // ===============================
+    size_t cursor = 0;
+
+    int width  = readNextIntFromBuffer(inputBuffer, cursor);
+    int height = readNextIntFromBuffer(inputBuffer, cursor);
+
     if (width <= 0 || height <= 0) {
         fprintf(stderr, "Erro: Falha ao ler resolução do CSV.\n");
         return 1;
     }
 
-    // 3. Prepara a RAM
-    std::vector<unsigned char> pixels;
-    pixels.reserve(width * height * 3);
-
-    // 4. Lê os pixels
-
-
-    //int val;
-    //while ((val = readNextInt()) != -1) {
-        //pixels.push_back((unsigned char)val);
-    //}
-
-    //if (pixels.size() < (size_t)(width * height * 3)) {
-        //fprintf(stderr, "Aviso: O CSV tem menos pixels (%zu bytes) do que a resolucao %dx%d exige.\n", pixels.size(), width, height);
-    //}
-
     size_t totalBytesEsperados = (size_t)width * height * 3;
-    int val;
 
-    // O loop agora só roda enquanto não atingir o limite de pixels
-    while (pixels.size() < totalBytesEsperados && (val = readNextInt()) != -1) {
-           pixels.push_back((unsigned char)val);
+    std::vector<unsigned char> pixels;
+    pixels.reserve(totalBytesEsperados);
+
+    while (pixels.size() < totalBytesEsperados) {
+        int val = readNextIntFromBuffer(inputBuffer, cursor);
+        if (val == -1)
+            break;
+
+        pixels.push_back((unsigned char)val);
     }
 
-    // Pequeno check de segurança para o seu benchmark
     if (pixels.size() < totalBytesEsperados) {
-        fprintf(stderr, "Erro: O arquivo acabou antes de preencher todos os pixels!\n");
+        fprintf(stderr,
+                "Erro: Pixels insuficientes (%zu / %zu).\n",
+                pixels.size(),
+                totalBytesEsperados);
+        return 1;
     }
 
-    // 5. Configurações e Compressão
+    // ===============================
+    // 4. Compressão JPEG
+    // ===============================
     const bool isRGB = true;
-    const bool downsample = false; 
-    
-    // Passa a variável 'quality' que nós capturamos do terminal
-    bool ok = TooJpeg::writeJpeg(myOutput, pixels.data(), width, height, isRGB, quality, downsample, NULL);
-    
+    const bool downsample = false;
+
+    bool ok = TooJpeg::writeJpeg(
+        myOutput,
+        pixels.data(),
+        width,
+        height,
+        isRGB,
+        quality,
+        downsample,
+        NULL
+    );
+
     if (!ok) {
         fprintf(stderr, "Erro interno na biblioteca toojpeg.\n");
         return 1;

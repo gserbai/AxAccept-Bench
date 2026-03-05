@@ -57,7 +57,7 @@ Builds the lightweight OS layer.
 cd axpike-pk
 mkdir build && cd build
 ../configure --prefix=$RISCV --host=riscv64-unknown-elf
-sudo make
+make
 sudo make install
 
 ```
@@ -71,7 +71,7 @@ cd axpike-isa-sim
 mkdir build && 
 cd build
 ../configure --prefix=$RISCV
-sudo make -j
+make -j
 sudo make install
 
 ```
