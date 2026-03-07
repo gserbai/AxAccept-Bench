@@ -2,7 +2,7 @@
 
 **AxAccept-Bench** is a benchmark suite designed to evaluate the **acceptability levels** of approximate computing techniques.
 
-This project provides a set of applications and scripts to test different approximation parameters using a complete RISC-V simulation stack. The goal is to explore the trade-offs between hardware approximation, performance, and the perceptual quality (acceptability) of the final result.
+This project provides a set of applications and scripts to test different approximation parameters using a complete RISC-V simulation stack. The goal is to explore the trade-offs between hardware approximation, software, performance, and the perceptual quality (acceptability) of the final result. 
 
 ---
 
@@ -45,11 +45,12 @@ example from comands to shell to you need run
     source ~/.bashrc
 ```
 
-You can install the environment by following the steps below.
+### You can install the environment by following the steps below.
 
-!!!remember use --recursive!!! 
+> ⚠️ **CAUTION**
+> Remember to use `git clone --recursive` when cloning the repository because it includes required submodule dependencies.
 
-#### 1. AxPike Proxy Kernel (pk)
+##### 1. AxPike Proxy Kernel (pk)
 
 Builds the lightweight OS layer.
 
@@ -62,7 +63,7 @@ sudo make install
 
 ```
 
-#### 2. AxPike ISA Simulator (Spike)
+##### 2. AxPike ISA Simulator (Spike)
 
 Builds the hardware simulator.
 
@@ -82,6 +83,6 @@ sudo make install
 
 Detailed instructions on how to execute the benchmarks and analyze results can be found in the documentation:
 
-**[See Usage.md](JPEG/USAGE.md)**
+**[See Usage.md](applications/jpeg/src/usage.md)**
 
 

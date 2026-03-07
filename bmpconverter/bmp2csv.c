@@ -1,7 +1,5 @@
 /*
  * Part of AxAccept-Bench
- * Copyright (c) 2025-2026 Guilherme Saides Serbai
- * Licensed under the Apache License, Version 2.0
  */
 
 #include <stdio.h>
