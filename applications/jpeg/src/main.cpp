@@ -1,6 +1,6 @@
 // //////////////////////////////////////////////////////////
-// main.cpp - versão robusta para bare metal
-// Guilherme Saides Serbai 2025-2026
+// main.cpp - bare metal
+// Guilherme Saides Serbai 2026
 // //////////////////////////////////////////////////////////
 
 #include <iostream>
@@ -27,9 +27,9 @@ int readNextIntFromBuffer(const std::vector<char>& buffer, size_t& cursor) {
             value = value * 10 + (c - '0');
             started = true;
         } else {
-            // Se já tínhamos começado a ler um número e veio algo que não é dígito, terminamos
+            
             if (started) break;
-            // Se ainda não começamos, apenas ignoramos o caractere (lixo, vírgula, espaço) e continuamos procurando
+            
             continue; 
         }
     }
@@ -94,7 +94,7 @@ int main(int argc, char* argv[]) {
 
         pixels.push_back((unsigned char)val);
     }
-
+/*
     if (pixels.size() < totalBytesEsperados) {
         fprintf(stderr,
                 "Erro: Pixels insuficientes (%zu / %zu).\n",
@@ -102,7 +102,7 @@ int main(int argc, char* argv[]) {
                 totalBytesEsperados);
         return 1;
     }
-
+*/
     // ===============================
     // 4. Compressão JPEG
     // ===============================

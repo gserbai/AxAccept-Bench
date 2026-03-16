@@ -28,6 +28,19 @@ This benchmark environment is built upon key components developed by the **VArch
 * **URL:** https://github.com/stbrumme/toojpeg
 * **License:** Zlib License.
 
+### 6. ResNet50
+* **Description:** A deep convolutional neural network architecture based on residual learning.
+* **Paper:** Deep Residual Learning for Image Recognition.
+* **Authors:** Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun.
+* **Conference:** CVPR 2016.
+* **URL:** https://arxiv.org/abs/1512.03385
+
+### 7. STL-10 Dataset
+* **Description:** An image recognition dataset designed for developing unsupervised feature learning and deep learning algorithms.
+* **Authors:** Adam Coates, Andrew Ng, Honglak Lee.
+* **URL:** https://cs.stanford.edu/~acoates/stl10/
+* **Paper:** An Analysis of Single-Layer Networks in Unsupervised Feature Learning.
+* **Conference:** AISTATS 2011.
 ---
 
 ## Setup & Installation
@@ -83,6 +96,6 @@ sudo make install
 
 Detailed instructions on how to execute the benchmarks and analyze results can be found in the documentation:
 
-**[See Usage.md](applications/jpeg/src/usage.md)**
+**[See Usage.md](applications/jpeg/usage.md)**
 
 

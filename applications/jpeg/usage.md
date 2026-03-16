@@ -35,7 +35,7 @@ If you do not modify the kernel, you must use the `clean_jpeg` tool to strip the
 Use the RISC-V cross-compiler to generate a static binary with high-level optimization:
 
 ```bash
-cd /applications/jpegsrc
+cd applications/jpeg/src
 riscv64-unknown-elf-g++ -O3 -static -o ./toojpeg_encoder main.cpp toojpeg.cpp
 
 ```
@@ -53,10 +53,21 @@ to you use the parameter de errors you need set for on the variavel initial in /
 
 
 ```bash
-cd /applications/jpeg
+cd applications/jpeg/src
 axpike --adele=mem_read_prob:1e-2,linesz:32 --adele-activate=0:AXRAM --dc=128:8:32 --ic=256:4:32 --l2=1024:4:32 pk ./src/toojpeg_encoder 100 < path.csv > output.jpeg
 
 ```
+
+Batch Processing
+
+If you want to process a large number of images (e.g., the STL-10 dataset)
+in batch mode, follow the instructions available in:
+
+**[See Usage.md](applications/jpeg/RunBatchJpeg/usagerunbatch.md)**
+
+The commands described in that document will automatically execute
+the JPEG encoder over the dataset and generate a new dataset using
+the specified approximation parameters.
 
 ### Parameter Breakdown:
 
