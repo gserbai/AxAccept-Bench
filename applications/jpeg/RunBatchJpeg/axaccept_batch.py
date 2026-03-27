@@ -10,13 +10,15 @@ from pathlib import Path
 
 # Configurações de diretório
 DATASET_DIR = Path("./src/dataset_csv")
-OUTPUT_JPEG_DIR = Path("./src/dataset_error_rate_1.4e-1")
+OUTPUT_JPEG_DIR = Path("./src/dataset_error_rate_1e-4")
+# Nova raiz para os logs de simulação
+LOG_DIR = Path("./src/logs")
 
 def run_conversion():
-    # Garante que o diretório de saída existe
+    # Garante que os diretórios de saída existam
     OUTPUT_JPEG_DIR.mkdir(parents=True, exist_ok=True)
+    LOG_DIR.mkdir(parents=True, exist_ok=True)
 
-    # 1. Busca todos os arquivos .csv recursivamente (similar ao find)
     csv_files = list(DATASET_DIR.rglob("*.csv"))
     
     if not csv_files:
@@ -26,49 +28,60 @@ def run_conversion():
     print(f"Encontrados {len(csv_files)} arquivos para processar.")
 
     for input_csv in csv_files:
-        # 2. Calcula o caminho relativo para espelhar a estrutura de pastas
+        # 1. Calcula o caminho relativo (ex: test/monkey/img_05638.csv)
         relative_path = input_csv.relative_to(DATASET_DIR)
+        
+        # 2. Define o destino da imagem e do log mantendo a hierarquia
         output_jpeg = OUTPUT_JPEG_DIR / relative_path.with_suffix(".jpeg")
+        output_log = LOG_DIR / relative_path.with_suffix(".log")
 
-        # 3. Cria a subpasta necessária
+        # 3. Cria as subpastas necessárias em ambos os destinos
         output_jpeg.parent.mkdir(parents=True, exist_ok=True)
+        output_log.parent.mkdir(parents=True, exist_ok=True)
 
-        print(f"Processando: {relative_path} -> {output_jpeg.name}")
+        print(f"Processando: {relative_path}")
+        print(f"  -> Imagem: {output_jpeg.relative_to(OUTPUT_JPEG_DIR)}")
+        print(f"  -> Log:    {output_log.relative_to(LOG_DIR)}")
 
-        # 4. Configuração do comando AxPike
-        # Montamos como uma lista para evitar problemas com espaços ou caracteres especiais
         cmd = [
             "axpike",
-            "--adele=mem_read_prob:1.4e-1,linesz:32",
+            "--adele=mem_read_prob:1e-4,linesz:32",
             "--adele-activate=0:AXRAM",
             "--dc=128:8:32",
             "--ic=256:4:32",
             "--l2=1024:4:32",
             "pk",
-            "./applications/jpeg/src/toojpeg_encoder",
+            "./src/toojpeg_encoder",
             "100"
         ]
 
         try:
-            # Execução segura:
-            # f_in: fornece os pixels do CSV para o stdin do simulador
-            # f_out: captura a imagem gerada (stdout) e salva no arquivo .jpeg
-            with open(input_csv, "r") as f_in, open(output_jpeg, "wb") as f_out:
+            # Redirecionamento triplo:
+            # stdin  <- arquivo CSV original
+            # stdout -> arquivo JPEG (imagem codificada)
+            # stderr -> arquivo LOG (estatísticas do AxPike)
+            with open(input_csv, "r") as f_in, \
+                 open(output_jpeg, "wb") as f_out, \
+                 open(output_log, "w") as f_log:
+                
                 result = subprocess.run(
                     cmd, 
                     stdin=f_in, 
                     stdout=f_out, 
-                    stderr=subprocess.PIPE, 
-                    text=False
+                    stderr=f_log, 
+                    text=True
                 )
             
             if result.returncode != 0:
-                print(f"  [!] Erro ao processar {input_csv.name}: {result.stderr.decode().strip()}")
+                # O log já contém os detalhes do erro/aviso
+                pass 
                 
         except Exception as e:
             print(f"  [!] Falha crítica no arquivo {input_csv.name}: {e}")
 
-    print(f"\nConcluído! Estrutura de pastas mantida em {OUTPUT_JPEG_DIR}.")
+    print(f"\nConcluído!")
+    print(f"Imagens em: {OUTPUT_JPEG_DIR}")
+    print(f"Logs em:    {LOG_DIR}")
 
 if __name__ == "__main__":
     run_conversion()
