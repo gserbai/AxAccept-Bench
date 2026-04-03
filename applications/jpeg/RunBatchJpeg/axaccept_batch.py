@@ -8,39 +8,38 @@ import os
 import subprocess
 from pathlib import Path
 
-# Configurações de diretório
+# Directory configurations
 DATASET_DIR = Path("./src/dataset_csv")
 OUTPUT_JPEG_DIR = Path("./src/dataset_error_rate_1e-4")
-# Nova raiz para os logs de simulação
 LOG_DIR = Path("./src/logs")
 
 def run_conversion():
-    # Garante que os diretórios de saída existam
+    # Ensure output directories exist
     OUTPUT_JPEG_DIR.mkdir(parents=True, exist_ok=True)
     LOG_DIR.mkdir(parents=True, exist_ok=True)
 
     csv_files = list(DATASET_DIR.rglob("*.csv"))
     
     if not csv_files:
-        print(f"Nenhum arquivo .csv encontrado em {DATASET_DIR}")
+        print(f"No .csv files found in {DATASET_DIR}")
         return
 
-    print(f"Encontrados {len(csv_files)} arquivos para processar.")
+    print(f"Found {len(csv_files)} files to process.")
 
     for input_csv in csv_files:
-        # 1. Calcula o caminho relativo (ex: test/monkey/img_05638.csv)
+        # 1. Calculate relative path (e.g., test/monkey/img_05638.csv)
         relative_path = input_csv.relative_to(DATASET_DIR)
         
-        # 2. Define o destino da imagem e do log mantendo a hierarquia
+        # 2. Define image and log destinations maintaining hierarchy
         output_jpeg = OUTPUT_JPEG_DIR / relative_path.with_suffix(".jpeg")
         output_log = LOG_DIR / relative_path.with_suffix(".log")
 
-        # 3. Cria as subpastas necessárias em ambos os destinos
+        # 3. Create necessary subfolders in both destinations
         output_jpeg.parent.mkdir(parents=True, exist_ok=True)
         output_log.parent.mkdir(parents=True, exist_ok=True)
 
-        print(f"Processando: {relative_path}")
-        print(f"  -> Imagem: {output_jpeg.relative_to(OUTPUT_JPEG_DIR)}")
+        print(f"processing: {relative_path}")
+        print(f"  -> Image: {output_jpeg.relative_to(OUTPUT_JPEG_DIR)}")
         print(f"  -> Log:    {output_log.relative_to(LOG_DIR)}")
 
         cmd = [
@@ -56,10 +55,10 @@ def run_conversion():
         ]
 
         try:
-            # Redirecionamento triplo:
-            # stdin  <- arquivo CSV original
-            # stdout -> arquivo JPEG (imagem codificada)
-            # stderr -> arquivo LOG (estatísticas do AxPike)
+            # Triple redirection:
+            # stdin  <- original CSV file
+            # stdout -> JPEG file (encoded image)
+            # stderr -> LOG file (AxPike statistics)
             with open(input_csv, "r") as f_in, \
                  open(output_jpeg, "wb") as f_out, \
                  open(output_log, "w") as f_log:
@@ -73,15 +72,15 @@ def run_conversion():
                 )
             
             if result.returncode != 0:
-                # O log já contém os detalhes do erro/aviso
+                # The log already contains the error/warning details
                 pass 
                 
         except Exception as e:
-            print(f"  [!] Falha crítica no arquivo {input_csv.name}: {e}")
+            print(f"  [!] Critical file failure {input_csv.name}: {e}")
 
-    print(f"\nConcluído!")
-    print(f"Imagens em: {OUTPUT_JPEG_DIR}")
-    print(f"Logs em:    {LOG_DIR}")
+    print(f"\nCompleted!")
+    print(f"Images in: {OUTPUT_JPEG_DIR}")
+    print(f"Logs in:    {LOG_DIR}")
 
 if __name__ == "__main__":
     run_conversion()
