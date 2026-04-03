@@ -41,9 +41,9 @@ Parameter description:
 Examples of error configurations variable with size image in relation memory:
 
 ```
-1e-2   → Low approximation
-1e-1   → Medium approximation
-1.4e-1 → Higher approximation
+1e-4   → Low approximation
+1e-3   → Medium approximation
+1e-1   → Higher approximation
 ```
 
 Each configuration can generate a **different experimental dataset**.
