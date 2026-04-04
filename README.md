@@ -2,7 +2,7 @@
 
 **AxAccept-Bench** is a benchmark suite designed to evaluate the **acceptability levels** of approximate computing techniques.
 
-This project provides a set of applications and scripts to test different approximation parameters using a complete RISC-V simulation stack. The goal is to explore the trade-offs between hardware approximation, software, performance, and the perceptual quality (acceptability) of the final result. 
+This project provides a set of applications and scripts to test different approximation parameters using a complete RISC-V simulation stack. The goal is to explore the trade-offs between hardware approximation, software, performance, energy and the perceptual quality (acceptability) of the final result using NN. 
 
 ---
 
