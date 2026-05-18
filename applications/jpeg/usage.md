@@ -53,17 +53,16 @@ to you use the parameter de errors you need set for on the variavel initial in /
 
 
 ```bash
-cd applications/jpeg/src
-axpike --adele=mem_read_prob:1e-2,linesz:32 --adele-activate=0:AXRAM --dc=128:8:32 --ic=256:4:32 --l2=1024:4:32 pk ./src/toojpeg_encoder 100 < path.csv > output.jpeg
+axpike --adele=mem_read_prob:1e-2,linesz:32 --adele-activate=0:AXRAM --dc=128:8:32 --ic=256:4:32 --l2=1024:4:32 pk ./home/guilherme/AxAccept-Bench/applications/jpeg/src/toojpeg_encoder 100 < path.csv > output.jpeg
 
 ```
 
 Batch Processing
 
-If you want to process a large number of images (e.g., the STL-10 dataset)
+If you want to process a large number of images (e.g., the imagenette dataset)
 in batch mode, follow the instructions available in:
 
-**[See Usage.md](applications/jpeg/RunBatchJpeg/usagerunbatch.md)**
+**[See Usage.md](jpeg/RunBatchJpeg/usagerunbatch.md)**
 
 The commands described in that document will automatically execute
 the JPEG encoder over the dataset and generate a new dataset using
@@ -85,6 +84,6 @@ the specified approximation parameters.
 If the `output.jpeg` is not opening, ensure that:
 
 1. The `printm` line was successfully commented out.
-2. You are using the correct `lena.csv` format for the encoder.
+2. You are using the correct `xxx.csv` format for the encoder.
 
 ---

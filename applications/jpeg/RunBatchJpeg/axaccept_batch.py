@@ -45,7 +45,7 @@ def run_conversion():
         cmd = [
             "axpike",
             "--adele=mem_read_prob:1e-4,linesz:32",
-            "--adele-activate=0:AXRAM",
+            ",mem_log:log_mem.mem,--adele-activate=0:AXRAM",
             "--dc=128:8:32",
             "--ic=256:4:32",
             "--l2=1024:4:32",

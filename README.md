@@ -22,25 +22,12 @@ This benchmark environment is built upon key components developed by the **VArch
 * **Repository:** [riscv-collab/riscv-gnu-toolchain](https://github.com/riscv-collab/riscv-gnu-toolchain.git)
 * **Description:** The standard GCC toolchain for cross-compiling RISC-V applications.
 
-### 5. TooJpeg (Image Compression Engine)
-* **Author:** Stephan Brumme.
-* **Project:** "TooJpeg: A very small C++ class to write JPEG files".
-* **URL:** https://github.com/stbrumme/toojpeg
-* **License:** Zlib License.
-
-### 6. ResNet50
+### 4. ResNet50
 * **Description:** A deep convolutional neural network architecture based on residual learning.
 * **Paper:** Deep Residual Learning for Image Recognition.
 * **Authors:** Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun.
 * **Conference:** CVPR 2016.
 * **URL:** https://arxiv.org/abs/1512.03385
-
-### 7. STL-10 Dataset
-* **Description:** An image recognition dataset designed for developing unsupervised feature learning and deep learning algorithms.
-* **Authors:** Adam Coates, Andrew Ng, Honglak Lee.
-* **URL:** https://cs.stanford.edu/~acoates/stl10/
-* **Paper:** An Analysis of Single-Layer Networks in Unsupervised Feature Learning.
-* **Conference:** AISTATS 2011.
 ---
 
 ## Setup & Installation
