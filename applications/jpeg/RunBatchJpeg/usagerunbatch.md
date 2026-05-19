@@ -1,114 +1,63 @@
-# Running in batch-Jpeg 
+# JPEG Benchmark — Memory Fault Susceptibility
+
+Single and batch execution of the JPEG encoder under memory approximation via AxPike,
+using probabilistic error models to simulate low-voltage scenarios.
+
+---
 
 ## Single Execution
 
-You can run a single execution of the JPEG encoder through AxPike:
-
 ```bash
-axpike --adele=mem_read_prob:1.4e-1,linesz:32 \
+axpike --adele=mem_read_prob:1e-4,linesz:32 \
        --adele-activate=0:AXRAM \
+       --mem_log=log_mem.mem \
        --dc=128:8:32 \
        --ic=256:4:32 \
        --l2=1024:4:32 \
-       pk ./applications/jpeg/src/toojpeg_encoder 100 < input.csv > output.jpeg
+       pk ./home/user/AxAccept-Bench/applications/jpeg/src/toojpeg_encoder 100 < input.csv > output.jpeg
 ```
-
-This command:
-
-1. Executes the JPEG encoder
-2. Injects memory approximation faults
-3. Produces a JPEG image as output
 
 ---
 
-# Approximation Parameters
+## Approximation Parameters
 
-Approximation is controlled through the `--adele` parameter.
-
-Example:
-
-```
---adele=mem_read_prob:1.4e-1,linesz:32
-```
-
-Parameter description:
-
-| Parameter     | Description                                     |
-| ------------- | ----------------------------------------------- |
-| mem_read_prob | Probability of memory read approximation        |
-| linesz        | Cache line size used by the approximation model |
-
-Examples of error configurations variable with size image in relation memory:
+| Parameter | Description |
+|---|---|
+| `mem_read_prob` | probability of memory error in read |
+| `linesz` | cache line size |
 
 ```
-1e-4   → Low approximation
-1e-3   → Medium approximation
-1e-1   → Higher approximation
+1e-4  → low
+1e-3  → medium
+1e-1  → high
 ```
-
-Each configuration can generate a **different experimental dataset**.
 
 ---
 
-# Batch Execution
+## Batch Execution
 
-To process a large dataset automatically, use one of the batch scripts.
-
-## Python Batch Script
-
-Run:
-
+**Python:**
 ```bash
 python axaccept_batch.py
 ```
 
-The script will:
-
-1. Search for `.csv` files inside:
-
-```
-src/dataset_csv/
-```
-
-2. Execute the JPEG encoder through AxPike for each file.
-
-3. Store generated images in:
-
-```
-src/dataset_error_rate_1.4e-1/
-```
-
-The folder structure of the dataset is preserved during execution. 
-
----
-
-## Shell Batch Script
-
-Alternatively, you can use the shell script:
-
+**Shell:**
 ```bash
 bash axaccept_batch.sh
 ```
 
-This script recursively scans the dataset directory and executes the simulator for each input image. 
+Both scan `src/dataset_csv/` recursively and write output to
+`src/dataset_error_rate_<rate>/`, preserving the original directory structure.
 
 ---
 
-# Changing the Approximation Error Rate
+## Changing Error Rate
 
-To evaluate different approximation levels, modify the parameter:
-
-```
-mem_read_prob
-```
-
-Example:
+Edit `mem_read_prob` in the `--adele` flag:
 
 ```
---adele=mem_read_prob:1e-2
+--adele=mem_read_prob:1e-4
+--adele=mem_read_prob:1e-3
 --adele=mem_read_prob:1e-1
 --adele=mem_read_prob:1.4e-1
 ```
-
-
-

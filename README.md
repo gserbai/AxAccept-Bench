@@ -1,88 +1,53 @@
-# AxAccept-Bench: Benchmark for Acceptability of Approximation
+# AxAccept-Bench
 
-**AxAccept-Bench** is a benchmark suite designed to evaluate the **acceptability levels** of approximate computing techniques.
-
-This project provides a set of applications and scripts to test different approximation parameters using a complete RISC-V simulation stack. The goal is to explore the trade-offs between hardware approximation, software, performance, energy and the perceptual quality (acceptability) of the final result using NN. 
+Benchmark suite for evaluating acceptability of approximate computing techniques.
+Tests approximation parameters using a RISC-V simulation stack, measuring
+trade-offs between energy, performance, and output quality via neural network
+acceptability analysis.
 
 ---
 
-## Core Architecture & Components
+## Dependencies
 
-This benchmark environment is built upon key components developed by the **VArchC research group**, the RISC-V community, and the original AxBench suite.
+- [axpike-isa-sim](https://github.com/VArchC/axpike-isa-sim.git) — Spike fork with approximate instruction support
+- [axpike-pk](https://github.com/VArchC/axpike-pk.git) — proxy kernel for RISC-V execution
+- [riscv-gnu-toolchain](https://github.com/riscv-collab/riscv-gnu-toolchain.git) — cross-compiler toolchain
+- ResNet-50 — He et al., Deep Residual Learning for Image Recognition, CVPR 2016
 
-### 1. Approximate Hardware Simulator
-* **Repository:** [VArchC/axpike-isa-sim](https://github.com/VArchC/axpike-isa-sim.git)
-* **Description:** A modified version of the Spike simulator supporting approximate instructions.
-
-### 2. Proxy Kernel (OS Layer)
-* **Repository:** [VArchC/axpike-pk](https://github.com/VArchC/axpike-pk.git)
-* **Description:** A lightweight application execution environment (proxy kernel) adapted for the approximate hardware.
-
-### 3. Compiler Toolchain
-* **Repository:** [riscv-collab/riscv-gnu-toolchain](https://github.com/riscv-collab/riscv-gnu-toolchain.git)
-* **Description:** The standard GCC toolchain for cross-compiling RISC-V applications.
-
-### 4. ResNet50
-* **Description:** A deep convolutional neural network architecture based on residual learning.
-* **Paper:** Deep Residual Learning for Image Recognition.
-* **Authors:** Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun.
-* **Conference:** CVPR 2016.
-* **URL:** https://arxiv.org/abs/1512.03385
 ---
 
-## Setup & Installation
+## Build
 
-This project assumes you already have the riscv-gnu-toolchain configured. If not, please refer to https://github.com/riscv-collab/riscv-gnu-toolchain.git for more information. You can clone the repository and follow the steps below:
-RISC-V Toolchain Build:
-
-example from comands to shell to you need run
-
+**riscv-gnu-toolchain** (example):
 ```bash
-    sudo mkdir -p /opt/riscv && \
-    ./configure --prefix=/opt/riscv && \
-    make && \
-    echo 'export PATH=$PATH:/opt/riscv/bin' >> ~/.bashrc
-    source ~/.bashrc
-```
-
-### You can install the environment by following the steps below.
-
-> ⚠️ **CAUTION**
-> Remember to use `git clone --recursive` when cloning the repository because it includes required submodule dependencies.
-
-##### 1. AxPike Proxy Kernel (pk)
-
-Builds the lightweight OS layer.
-
-```bash
-cd axpike-pk
-mkdir build && cd build
-../configure --prefix=$RISCV --host=riscv64-unknown-elf
+# this is an example — configure flags may vary for your system
+sudo mkdir -p /opt/riscv
+./configure --prefix=/opt/riscv
 make
-sudo make install
-
+echo 'export PATH=$PATH:/opt/riscv/bin' >> ~/.bashrc
+source ~/.bashrc
 ```
 
-##### 2. AxPike ISA Simulator (Spike)
-
-Builds the hardware simulator.
-
 ```bash
-cd axpike-isa-sim
-mkdir build && 
-cd build
-../configure --prefix=$RISCV
-make -j
-sudo make install
+git clone --recursive https://github.com/your/AxAccept-Bench.git
+```
 
+**pk:**
+```bash
+cd axpike-pk && mkdir build && cd build
+../configure --prefix=$RISCV --host=riscv64-unknown-elf
+make && sudo make install
+```
+
+**AxPike:**
+```bash
+cd axpike-isa-sim && mkdir build && cd build
+../configure --prefix=$RISCV
+make -j && sudo make install
 ```
 
 ---
 
-## How to Run
+## Usage
 
-Detailed instructions on how to execute the benchmarks and analyze results can be found in the documentation:
-
-**[See Usage.md](applications/jpeg/usage.md)**
-
-
+See [applications/jpeg/usage.md](applications/jpeg/usage.md).
