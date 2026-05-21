@@ -38,12 +38,12 @@ axpike --adele=mem_read_prob:1e-4,linesz:32 \
 
 **Python:**
 ```bash
-python axaccept_batch.py
+python axaccept_batch_jpeg.py
 ```
 
 **Shell:**
 ```bash
-bash axaccept_batch.sh
+bash axaccept_batch_jpeg.sh
 ```
 
 Both scan `src/dataset_csv/` recursively and write output to

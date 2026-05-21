@@ -91,7 +91,6 @@ def convert_from_manifest(dataset_dir: Path, output_csv_dir: Path, manifest_path
 
     return total_count
 
-
 if __name__ == "__main__":
     # Ajuste os paths conforme necessário
     DATASET_DIR    = Path("./dataset")           # saída do split_ucmerced.py
