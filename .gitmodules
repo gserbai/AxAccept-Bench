@@ -5,11 +5,11 @@
 	path = axpike-isa-sim
 	url = https://github.com/VArchC/axpike-isa-sim.git
 [submodule "ramulator2"]
-    path = ramulator2
-    url = https://github.com/CMU-SAFARI/ramulator2.git
+	path = ramulator2
+	url = https://github.com/CMU-SAFARI/ramulator2.git
 [submodule "ramulator"]
-    path = ramulator
-    url = https://github.com/CMU-SAFARI/ramulator.git
+	path = ramulator
+	url = https://github.com/CMU-SAFARI/ramulator.git
 [submodule "vampire"]
-    path = vampire
-    url = https://github.com/CMU-SAFARI/vampire.git
+	path = vampire
+	url = https://github.com/CMU-SAFARI/vampire.git
