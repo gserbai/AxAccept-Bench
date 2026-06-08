@@ -1,10 +1,5 @@
 # AxAccept-Bench
-
-Benchmark suite for evaluating acceptability of approximate computing techniques.
-Tests approximation parameters using a RISC-V simulation stack, measuring
-trade-offs between energy, performance, and output quality via neural network
-acceptability analysis.
-
+AxAccept-Bench is a benchmark developed to evaluate tolerance levels and the viability of hardware-level approximate computing. The infrastructure integrates two main components: the AxPIKE simulator, which enables controlled fault injection at the instruction level in RISC-V environments; and AxRAM, a resilient memory model that exploits application error tolerance to maximize energy savings. By simulating low-voltage operation through probabilistic models, the environment enables the quantification of the trade-off between structural data degradation and semantic validity within the application context, correlating these metrics with precise energy-gain estimations through integration with Ramulator and Vampire.
 ---
 
 ## Dependencies
@@ -50,7 +45,7 @@ $ cd build
 $ ../configure --prefix=$RISCV
 $ make -j
 $ [sudo] make install
-
+``` 
 ---
 
 ## Usage

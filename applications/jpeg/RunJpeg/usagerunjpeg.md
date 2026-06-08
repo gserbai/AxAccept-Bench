@@ -8,13 +8,13 @@ using probabilistic error models to simulate low-voltage scenarios.
 ## Single Execution
 
 ```bash
-axpike --adele=mem_read_prob:1e-4,linesz:32 \
+$ axpike --adele=mem_read_prob:1e-4,linesz:32 \
        --adele-activate=0:AXRAM \
        --mem_log=log_mem.mem \
        --dc=128:8:32 \
        --ic=256:4:32 \
        --l2=1024:4:32 \
-       pk ./home/user/AxAccept-Bench/applications/jpeg/src/toojpeg_encoder 100 < input.csv > output.jpeg
+       pk /home/user/AxAccept-Bench/applications/jpeg/src/toojpeg_encoder 100 < input.csv > output.jpeg
 ```
 
 ---
@@ -38,12 +38,12 @@ axpike --adele=mem_read_prob:1e-4,linesz:32 \
 
 **Python:**
 ```bash
-python axaccept_batch_jpeg.py
+$ python axaccept_batch_jpeg.py
 ```
 
 **Shell:**
 ```bash
-bash axaccept_batch_jpeg.sh
+$ bash axaccept_batch_jpeg.sh
 ```
 
 Both scan `src/dataset_csv/` recursively and write output to

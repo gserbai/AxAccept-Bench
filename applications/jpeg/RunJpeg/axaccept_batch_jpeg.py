@@ -9,8 +9,8 @@ import subprocess
 from pathlib import Path
 
 # Directory configurations
-DATASET_DIR = Path("./src/dataset_csv")
-OUTPUT_JPEG_DIR = Path("./src/dataset_error_rate_1e-4")
+DATASET_DIR = Path("/home/guilherme/UC_MERCED_LAND_USE/Datas/dataset_csv")
+OUTPUT_JPEG_DIR = Path("./src/dataset_error_rate_1e-1")
 LOG_DIR = Path("./src/logs")
 
 def run_conversion():
@@ -43,16 +43,16 @@ def run_conversion():
         print(f"  -> Log:    {output_log.relative_to(LOG_DIR)}")
 
         cmd = [
-            "axpike",
-            "--adele=mem_read_prob:1e-4,linesz:32",
-            ",mem_log:log_mem.mem,--adele-activate=0:AXRAM",
-            "--dc=128:8:32",
-            "--ic=256:4:32",
-            "--l2=1024:4:32",
-            "pk",
-            "./src/toojpeg_encoder",
-            "100"
-        ]
+              "axpike",
+              "--adele=mem_read_prob:1e-1,linesz:32,mem_log:log_mem.mem",
+              "--adele-activate=0:AXRAM",
+              "--dc=128:8:32",
+              "--ic=256:4:32",
+              "--l2=1024:4:32",
+              "pk",
+              "./src/toojpeg_encoder",
+              "100"
+]
 
         try:
             # Triple redirection:
