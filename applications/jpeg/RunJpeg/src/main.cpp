@@ -96,15 +96,6 @@ int main(int argc, char* argv[]) {
 
         pixels.push_back((unsigned char)val);
     }
-/*
-    if (pixels.size() < totalBytesEsperados) {
-        fprintf(stderr,
-                "Erro: Pixels insuficientes (%zu / %zu).\n",
-                pixels.size(),
-                totalBytesEsperados);
-        return 1;
-    }
-*/
     // ===============================
     // 4. Compressão JPEG
     // ===============================
