@@ -1,0 +1,7 @@
+scenario,mem_read_prob,mapped_error_percent,mapped_error_percent_order,voltage_v,memspec_path,enabled,notes
+dataset_error_rate_0,0,0,0,1.350,configs/drampower/memspecs/vendor_b/MICRON_2Gb_DDR3-1600_16bit_D_1p350V.xml,1,accurate baseline
+dataset_error_rate_1e-5,1e-5,0.001,10^-3 %,1.150,configs/drampower/memspecs/vendor_b/MICRON_2Gb_DDR3-1600_16bit_D_1p150V.xml,1,representative Vendor B mapping
+dataset_error_rate_1e-4,1e-4,0.01,10^-2 %,1.125,configs/drampower/memspecs/vendor_b/MICRON_2Gb_DDR3-1600_16bit_D_1p125V.xml,1,representative Vendor B mapping
+dataset_error_rate_1e-3,1e-3,0.1,10^-1 %,1.100,configs/drampower/memspecs/vendor_b/MICRON_2Gb_DDR3-1600_16bit_D_1p100V.xml,1,representative Vendor B mapping
+dataset_error_rate_1e-2,1e-2,1.0,10^0 %,1.075,configs/drampower/memspecs/vendor_b/MICRON_2Gb_DDR3-1600_16bit_D_1p075V.xml,1,representative Vendor B mapping
+dataset_error_rate_1e-1,1e-1,10.0,10^1 %,1.050,configs/drampower/memspecs/vendor_b/MICRON_2Gb_DDR3-1600_16bit_D_1p050V.xml,1,representative Vendor B mapping

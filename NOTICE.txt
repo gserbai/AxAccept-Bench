@@ -1,21 +1,68 @@
 AxAccept-Bench
-Copyright (c) 2025 Guilherme Saides Serbai. All rights reserved.
+Copyright (c) 2025-2026 Guilherme Saides Serbai. All rights reserved.
 
 Licensed under the Apache License.
 See the LICENSE file for more details.
 
 ==========================================================================
 THIRD-PARTY SOFTWARE NOTICES
-==========================================================================
+============================
 
-This product includes software or benchmarks adapted from:
+This project includes third-party software and tools used as part of the
+AxAccept-Bench experimental infrastructure.
 
 1. TooJpeg
    Copyright (c) 2015-2023 Stephan Brumme
    Source: https://github.com/stbrumme/toojpeg
-   License: Zlib License (https://opensource.org/licenses/Zlib)
+   License: Zlib License
 
-   Description: A very small C++ class to write JPEG files. 
-   Used for image compression benchmarking in the AxAccept-Bench project.
+   Description:
+   A small C++ JPEG writer used for image compression benchmarking in the
+   AxAccept-Bench JPEG workload.
 
-==========================================================================
+---
+
+2. KISS FFT
+   Copyright (c) Mark Borgerding
+   Source: https://github.com/mborgerding/kissfft
+   License: Revised BSD License
+
+   Description:
+   A lightweight Fast Fourier Transform library used in the AxAccept-Bench
+   FFT workload.
+
+---
+
+3. Ramulator
+   Source: https://github.com/CMU-SAFARI/ramulator
+   License: MIT License
+
+   Description:
+   A cycle-accurate DRAM simulator used to generate DRAM command traces from
+   filtered AxRAM memory traces.
+
+   AxAccept-Bench uses Ramulator with the following DDR3 configuration:
+
+   standard = DDR3
+   speed    = DDR3_1600K
+   org      = DDR3_2Gb_x16
+
+---
+
+4. DRAMPower 4.1
+   Source: https://github.com/tukl-msd/DRAMPower
+   License: BSD 3-Clause License
+
+   Description:
+   A DRAM power and energy estimation tool used to estimate energy from
+   Ramulator command traces.
+
+   AxAccept-Bench uses the following DRAMPower memory specification:
+
+   DRAMPower-4.1/memspecs/MICRON_2Gb_DDR3-1600_16bit_D.xml
+
+---
+
+The third-party components listed above are not authored by the
+AxAccept-Bench author. Their original licenses, notices, and documentation
+should be preserved in their respective directories.
